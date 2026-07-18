@@ -1,0 +1,1342 @@
+/* ===========================
+    💠 CSS Theme Style 5 💠
+============================*/
+
+
+/* ── 1. DESIGN TOKENS ────────────────────────────────────────── */
+:root {
+    /* Brand */
+    --clr-primary:        #0F2B66;
+    --clr-primary-dark:   #091B45;
+    --clr-primary-deeper: #040D26;
+    --clr-accent-light:   #8A4DFF;
+    --clr-accent-mid:     #FF8C42;
+    --clr-accent-bg:      #EEF2FF;
+    --clr-accent-hover:   rgba(138, 77, 255, 0.18);
+
+    /* Neutrals */
+    --clr-white:          #ffffff;
+    --clr-black:          #000000;
+    --clr-text-body:      #1E2440;
+    --clr-text-muted:     #6A7190;
+    --clr-surface:        #FFFFFF;
+    --clr-surface-alt:    #F5F7FD;
+    --clr-row-even:       #EEF3FF;
+    --clr-border:         #D8E0F5;
+    --clr-border-light:   #E9EEFA;
+
+    /* Layout */
+    --header-height:      60px;
+    --sidebar-width:      250px;
+    --content-max:        900px;
+    --page-max:           1100px;
+
+    /* Typography */
+    --font-body:          Arial, sans-serif;
+    --font-display:       "Berlin Sans FB", "Bahnschrift", Arial, sans-serif;
+    --font-ui:            "Bahnschrift SemiCondensed", "Bahnschrift", Arial, sans-serif;
+    --font-table-head:    "Bahnschrift Condensed", "Bahnschrift", Arial, sans-serif;
+
+    /* Effects */
+    --shadow-xs:          0 1px 4px rgba(15, 43, 102, 0.15);
+    --shadow-sm:          0 2px 8px rgba(138, 77, 255, 0.20);
+    --shadow-md:          0 6px 20px rgba(255, 140, 66, 0.20);
+    --shadow-lg:          0 8px 32px rgba(4, 13, 38, 0.40);
+
+    --radius-sm:          8px;
+    --radius-md:          12px;
+    --radius-lg:          20px;
+    --radius-xl:          24px;
+
+    --transition:         0.3s ease;
+    --transition-fast:    0.15s ease;
+}
+
+/* ── 2. RESET & BASE ─────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    min-height: 100%;
+    font-family: var(--font-body);
+    color: var(--clr-text-body);
+}
+
+body {
+    background-image: url('bg_img_5.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+
+/* ── 3. HEADER ───────────────────────────────────────────────── */
+@keyframes headerSlideDown {
+    from { transform: translateY(-100%); opacity: 0; }
+    to   { transform: translateY(0);     opacity: 1; }
+}
+
+.header {
+    background: linear-gradient(135deg, var(--clr-primary), var(--clr-primary-dark));
+    color: var(--clr-white);
+    width: 100%;
+    height: var(--header-height);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 60px;
+    font-size: clamp(20px, 4vw, 35px);
+    font-family: var(--font-display);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    animation: headerSlideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+
+/* ── 4. SIDEBAR ──────────────────────────────────────────────── */
+#openmenu {
+    display: none;
+}
+
+#openmenu:checked ~ #sidebar {
+    transform: translateX(0);
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.35);
+}
+
+#openmenu:checked ~ main {
+    margin-left: var(--sidebar-width);
+}
+
+/* Stagger nav-link animation when sidebar opens */
+#openmenu:checked ~ #sidebar a:nth-child(1)  { animation: sidebarLinkIn 0.32s 0.05s both; }
+#openmenu:checked ~ #sidebar a:nth-child(2)  { animation: sidebarLinkIn 0.32s 0.11s both; }
+#openmenu:checked ~ #sidebar a:nth-child(3)  { animation: sidebarLinkIn 0.32s 0.17s both; }
+#openmenu:checked ~ #sidebar a:nth-child(4)  { animation: sidebarLinkIn 0.32s 0.23s both; }
+#openmenu:checked ~ #sidebar a:nth-child(5)  { animation: sidebarLinkIn 0.32s 0.29s both; }
+#openmenu:checked ~ #sidebar a:nth-child(6)  { animation: sidebarLinkIn 0.32s 0.35s both; }
+
+@keyframes sidebarLinkIn {
+    from { opacity: 0; transform: translateX(-18px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+#sidebar {
+    /* Full viewport height minus header — works on every screen size */
+    height: calc(100dvh - var(--header-height));
+    position: fixed;
+    left: 0;
+    top: var(--header-height);
+    /* Fluid width: clamp(min, preferred, max) keeps sidebar proportional
+       on all devices without media-query overrides */
+    width: clamp(200px, 25vw, var(--sidebar-width));
+    background: linear-gradient(160deg,
+        var(--clr-primary) 0%,
+        var(--clr-primary-dark) 60%,
+        var(--clr-primary-deeper) 100%);
+    color: var(--clr-white);
+    padding: clamp(12px, 2vh, 20px) clamp(8px, 1.5vw, 14px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    transform: translateX(-100%);
+    transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.32s ease;
+    z-index: 1050;
+    /* Thin inner right border glow */
+    border-right: 1px solid rgba(255, 255, 255, 0.10);
+    /* Scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+
+#sidebar::-webkit-scrollbar        { width: 4px; }
+#sidebar::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.22); border-radius: 4px; }
+#sidebar::-webkit-scrollbar-track  { background: transparent; }
+
+#sidebar ul,
+#sidebar ol,
+#sidebar li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--clr-white);
+    text-decoration: none;
+    /* Fluid padding so links never feel cramped or oversized */
+    padding: clamp(10px, 1.6vh, 15px) clamp(12px, 2vw, 20px);
+    margin-bottom: clamp(4px, 0.8vh, 8px);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-ui);
+    font-size: clamp(0.82rem, 1.1vw + 0.5rem, 0.95rem);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: background 0.2s ease,
+                transform  0.2s ease,
+                box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    /* Ripple pseudo-element base */
+    isolation: isolate;
+}
+
+/* Subtle hover shimmer */
+#sidebar a::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+}
+
+#sidebar a:hover::before {
+    transform: translateX(100%);
+}
+
+#sidebar a:hover,
+#sidebar a.active {
+    background: var(--clr-primary-deeper);
+    transform: translateX(4px);
+    box-shadow: inset 3px 0 0 rgba(255, 255, 255, 0.4);
+}
+
+#sidebar a:active {
+    transform: translateX(2px) scale(0.98);
+}
+
+
+/* ── 5. MENU BUTTON ──────────────────────────────────────────── */
+.openmenuicon {
+    background: var(--clr-white);
+    width: clamp(30px, 4.5vw, 38px);
+    height: clamp(30px, 4.5vw, 38px);
+    position: fixed;
+    top: calc((var(--header-height) - clamp(30px, 4.5vw, 38px)) / 2);
+    left: clamp(8px, 1.5vw, 12px);
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    font-size: clamp(17px, 2.5vw, 22px);
+    font-weight: bold;
+    color: #111;
+    box-shadow: var(--shadow-sm);
+    transition: background 0.2s ease,
+                transform  0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.2s ease;
+    user-select: none;
+}
+
+.openmenuicon:hover {
+    background: #f1f1f1;
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: var(--shadow-md);
+}
+
+.openmenuicon:active {
+    transform: scale(0.95);
+}
+
+
+/* ── 6. MAIN CONTENT AREA ────────────────────────────────────── */
+@keyframes mainFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+main {
+    margin-top: var(--header-height);
+    margin-left: 0;
+    padding: 20px;
+    min-height: calc(100dvh - var(--header-height));
+    transition: margin-left 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: mainFadeIn 0.45s 0.15s ease both;
+}
+
+
+/* ── 7. TABLE (Calendar) ─────────────────────────────────────── */
+@keyframes tablePopIn {
+    from { opacity: 0; transform: scale(0.97) translateY(12px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    max-width: var(--content-max);
+    table-layout: fixed;
+    margin: 30px auto 60px;
+    background: var(--clr-white);
+    box-shadow: var(--shadow-md);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    text-align: center;
+    animation: tablePopIn 0.45s 0.2s cubic-bezier(0.34, 1.2, 0.64, 1) both;
+}
+
+.tableheading {
+    background: linear-gradient(135deg, #572d9b, var(--clr-accent-light), var(--clr-accent-mid));
+}
+
+th {
+    color: var(--clr-white);
+    font-family: var(--font-table-head);
+    font-weight: 600;
+    padding: 10px;
+    letter-spacing: 0.5px;
+    font-size: clamp(13px, 2.2vw, 26px);
+    word-wrap: break-word;
+}
+
+td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--clr-border);
+    height: 45px;
+    color: var(--clr-black);
+    background: var(--clr-accent-bg);
+    word-wrap: break-word;
+    transition: background 0.18s ease,
+                transform  0.15s ease,
+                box-shadow 0.15s ease;
+}
+
+tr:nth-child(even) td {
+    background: var(--clr-row-even);
+}
+
+tr:hover td {
+    background: var(--clr-accent-hover);
+    cursor: pointer;
+    transform: scale(1.01);
+    box-shadow: inset 0 0 0 1px rgba(7, 158, 14, 0.15);
+}
+
+th:first-child { border-top-left-radius:    var(--radius-md); }
+th:last-child  { border-top-right-radius:   var(--radius-md); }
+
+tr:last-child td:first-child { border-bottom-left-radius:  var(--radius-md); }
+tr:last-child td:last-child  { border-bottom-right-radius: var(--radius-md); }
+
+
+/* ── 8. CALCULATOR ───────────────────────────────────────────── */
+.calculator-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 25px auto;
+    padding: 10px;
+}
+
+.calculator-title {
+    margin-bottom: 12px;
+}
+
+.calculator-title h2 {
+    color: var(--clr-white);
+    font-size: 28px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: var(--font-ui);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.display {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.display input {
+    width: 100%;
+    height: 75px;
+    border: none;
+    outline: none;
+    border-radius: var(--radius-md);
+    padding: 15px;
+    text-align: right;
+    font-size: 28px;
+    font-weight: bold;
+    background: var(--clr-white);
+    color: var(--clr-black);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+.button {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.button button {
+    border: none;
+    cursor: pointer;
+    height: 68px;
+    border-radius: var(--radius-md);
+    font-size: 20px;
+    font-weight: bold;
+    background: var(--clr-accent-bg);
+    color: var(--clr-black);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.button button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.button button:active {
+    transform: scale(0.96);
+    box-shadow: none;
+}
+
+.button button:nth-child(1),
+.button button:nth-child(2),
+.button button:nth-child(3),
+.button button:nth-child(4),
+.button button:nth-child(8),
+.button button:nth-child(12),
+.button button:nth-child(16) {
+    background: linear-gradient(135deg, #2d9b32, var(--clr-accent-light), var(--clr-accent-mid));
+    color: var(--clr-white);
+}
+
+.button button:nth-child(20) {
+    background: linear-gradient(135deg, #19731e, var(--clr-accent-light), var(--clr-accent-mid));
+    color: var(--clr-white);
+    font-size: 30px;
+}
+
+
+/* ── 9. DIGITAL CLOCK ────────────────────────────────────────── */
+
+/* Dim overlay — clock page only. z-index: 0 keeps it behind
+   the header (z-index: 1000) and sidebar (z-index: 1050). */
+.clock-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.38);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Clock content must sit above the overlay but below the header. */
+@keyframes clockContainerIn {
+    from { opacity: 0; transform: translate(-50%, calc(-50% + 20px)); }
+    to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.clock-container {
+    position: fixed;
+    top: calc(var(--header-height) + (100dvh - var(--header-height)) / 2);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    z-index: 1;
+    animation: clockContainerIn 0.5s 0.1s cubic-bezier(0.34, 1.2, 0.64, 1) both;
+}
+
+.clock-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(6px, 2vw, 18px);
+    flex-wrap: nowrap;
+}
+
+/* Glassmorphism time blocks */
+@keyframes timeBoxPulse {
+    0%, 100% { box-shadow: var(--shadow-lg), 0 0 0 0 rgba(255,255,255,0.0); }
+    50%       { box-shadow: var(--shadow-lg), 0 0 18px 4px rgba(255,255,255,0.07); }
+}
+
+.time-box {
+    width: clamp(55px, 12vw, 140px);
+    height: clamp(55px, 12vw, 140px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.2s ease;
+    animation: timeBoxPulse 3s ease-in-out infinite;
+}
+
+.time-box:hover {
+    transform: scale(1.05);
+}
+
+.time-box span {
+    color: var(--clr-white);
+    font-size: clamp(1.3rem, 4.5vw, 4.5rem);
+    font-weight: 700;
+}
+
+/* Blinking separator */
+@keyframes separatorBlink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0.2; }
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.separator span {
+    color: var(--clr-white);
+    font-size: clamp(1.2rem, 4vw, 4rem);
+    font-weight: bold;
+    animation: separatorBlink 1s step-end infinite;
+}
+
+.meridiem {
+    width: clamp(38px, 9vw, 110px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.meridiem span {
+    color: var(--clr-white);
+    font-size: clamp(0.9rem, 2vw, 2rem);
+    letter-spacing: 2px;
+}
+
+/* Date label bar */
+.clock-label {
+    width: 100%;
+    height: clamp(46px, 7vh, 65px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.2s ease;
+}
+
+.clock-label:hover {
+    transform: scaleX(1.02);
+}
+
+.clock-label span {
+    color: var(--clr-white);
+    font-size: clamp(0.75rem, 1.5vw, 1.4rem);
+    font-weight: 600;
+    letter-spacing: clamp(3px, 1vw, 8px);
+}
+
+.clock-label a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* ── 10. ANALOG WALL CLOCK ───────────────────────────────────── */
+
+/* Modal sits above everything including header */
+.wall-clock-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.70);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+    padding: 24px;
+}
+
+.wall-clock-modal.active {
+    display: flex;
+}
+
+@keyframes clockPopup {
+    from { opacity: 0; transform: scale(0.82); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.wall-clock-box {
+    position: relative;
+    animation: clockPopup 0.28s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+/* Close button — floats top-right of the clock face */
+.close-btn {
+    position: absolute;
+    top: -16px;
+    right: -16px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background: var(--clr-white);
+    color: #111;
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.30);
+    z-index: 100;
+    transition: transform var(--transition-fast), background var(--transition-fast);
+    line-height: 1;
+}
+
+.close-btn:hover {
+    transform: scale(1.12);
+    background: #ffe5e5;
+    color: #c00;
+}
+
+/* Clock face
+   Uses vmin so it shrinks on both narrow and short viewports.
+   Max keeps it compact; min floor covers very small phones. */
+.analog-clock {
+    position: relative;
+    width:  clamp(220px, 55vmin, 380px);
+    height: clamp(220px, 55vmin, 380px);
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 35%,
+        #ffffff 0%,
+        #f2f2f2 60%,
+        #e4e4e4 100%
+    );
+    border: 12px solid var(--clr-primary);
+    box-shadow:
+        0 16px 48px rgba(0, 0, 0, 0.40),
+        inset 0 4px 14px rgba(255, 255, 255, 0.95),
+        inset 0 -4px 14px rgba(0, 0, 0, 0.07);
+}
+
+/* Inner tick ring */
+.analog-clock::before {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(1, 86, 5, 0.18);
+}
+
+/* Center cap */
+.center-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--clr-primary-dark);
+    transform: translate(-50%, -50%);
+    z-index: 50;
+    box-shadow: 0 0 0 3px rgba(1, 86, 5, 0.22);
+}
+
+/* Hands */
+.hour-hand,
+.minute-hand,
+.second-hand {
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    transform-origin: bottom center;
+    border-radius: 6px;
+}
+
+.hour-hand   { width: 7px;  height: 25%; background: #1a1a1a; z-index: 10; margin-left: -3.5px; }
+.minute-hand { width: 4px;  height: 35%; background: #333333; z-index: 11; margin-left: -2px; }
+.second-hand { width: 2px;  height: 42%; background: #e00000; z-index: 12; margin-left: -1px; }
+
+/* Clock numbers */
+.number {
+    position: absolute;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    color: #1b1b1b;
+    font-size: clamp(11px, 1.6vmin, 22px);
+    user-select: none;
+    line-height: 1;
+}
+
+/* Cardinal numbers — inset slightly so they don't overlap the border */
+.n12 { top: 10px;   left: 50%;   transform: translateX(-50%); }
+.n3  { top: 50%;    right: 10px; transform: translateY(-50%); }
+.n6  { bottom: 10px; left: 50%;  transform: translateX(-50%); }
+.n9  { top: 50%;    left: 10px;  transform: translateY(-50%); }
+
+/* Intermediate numbers */
+.n1  { top: 11%;    right: 24%; }
+.n2  { top: 24%;    right:  9%; }
+.n4  { bottom: 24%; right:  9%; }
+.n5  { bottom: 11%; right: 24%; }
+.n7  { bottom: 11%; left: 24%;  }
+.n8  { bottom: 24%; left:  9%;  }
+.n10 { top: 24%;    left:  7%;  }
+.n11 { top: 11%;    left: 24%;  }
+
+
+/* ── 11. ABOUT PAGE ──────────────────────────────────────────── */
+
+/* ── Page banner heading ── */
+.aboutheadpara {
+    width: min(96%, var(--page-max));
+    margin: 24px auto 0;
+    padding: 0 8px;
+    text-align: center;
+
+    position: relative;
+    top: 50px;
+}
+
+/* The actual heading pill/badge */
+.aboutheadpara h1,
+.aboutheadpara h2,
+.aboutheadpara p {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--clr-primary), var(--clr-primary-dark));
+    color: var(--clr-white);
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 3vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 32px;
+    border-radius: 50px;
+    box-shadow: 0 4px 18px rgba(7, 158, 14, 0.35);
+    line-height: 1.3;
+}
+
+/* About section wrapper */
+.paragraph {
+    width: min(96%, var(--page-max));
+    margin: 18px auto 30px;
+    padding: 0;
+    padding-top: 45px;
+}
+
+/* Section label above cards — e.g. "About Me", "About CalFlow" */
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    margin-top: 24px;
+}
+
+.section-label::before {
+    content: "";
+    display: block;
+    width: 5px;
+    height: 28px;
+    background: linear-gradient(180deg, var(--clr-primary), var(--clr-accent-mid));
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.section-label span {
+    font-family: var(--font-ui);
+    font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+    font-weight: 700;
+    color: var(--clr-white);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+}
+
+/* Individual info cards */
+.aboutmepara1,
+.aboutmepara2,
+.aboutmepara3 {
+    background: var(--clr-surface);
+    width: 100%;
+    max-width: 860px;
+    margin: 0 auto 12px;
+    padding: 18px 22px;
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--clr-primary);
+    text-align: left;
+    line-height: 1.75;
+    font-size: 0.95rem;
+    color: var(--clr-text-body);
+    box-shadow: var(--shadow-xs);
+}
+
+/* CalFlow features card */
+.keyfeaofCF {
+    background: var(--clr-surface);
+    margin-top: 12px;
+    padding: 20px 22px;
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--clr-primary);
+    box-shadow: var(--shadow-xs);
+}
+
+.aboutCFheading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--clr-primary-dark);
+    font-family: var(--font-ui);
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+.aboutCFheading::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 20px;
+    background: var(--clr-primary);
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.CFlist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.CFlist li {
+    padding: 9px 0;
+    border-bottom: 1px solid var(--clr-border-light);
+    text-align: left;
+    line-height: 1.65;
+    font-size: 0.92rem;
+    color: var(--clr-text-body);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.CFlist li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.CFlist li::before {
+    content: "▸";
+    color: var(--clr-primary);
+    font-size: 0.85rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+/* CTA button */
+.contheading h3 {
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-family: var(--font-ui);
+    font-weight: 700;
+    color: var(--clr-primary-dark);
+    text-align: center;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    line-height: 1.3;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    padding-top: 50px;
+}
+
+.contacthedingdes h3{
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-family: var(--font-ui);
+    font-weight: 700;
+    color: var(--clr-primary-dark);
+    text-align: center;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    line-height: 1.3;
+}
+
+.continfo{
+    padding : 26px 28px;
+    padding-top: 200px;
+}
+
+.contlink {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    background: linear-gradient(135deg, var(--clr-primary), var(--clr-primary-dark));
+    color: var(--clr-white);
+    padding: 12px 32px;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: var(--font-ui);
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.contlink:hover  { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.contlink:active { transform: scale(0.97); }
+
+
+/* ── 12. CONTACT PAGE ────────────────────────────────────────── */
+
+.contheading,
+.continfo,
+.connections,
+.sup {
+    max-width: 860px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Page title block */
+.contheading {
+    margin-top: 26px;
+    margin-bottom: 4px;
+    text-align: center;
+    padding: 0 12px;
+}
+
+/* Styled heading pill — matches about page banner style */
+.contheading h2 {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--clr-primary), var(--clr-primary-dark));
+    color: var(--clr-white);
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 3.5vw, 1.7rem);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 36px;
+    border-radius: 50px;
+    box-shadow: 0 4px 18px rgba(7, 158, 14, 0.35);
+    line-height: 1.3;
+}
+
+/* Shared card surface */
+.continfo,
+.connections,
+.sup {
+    background: var(--clr-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    padding: 26px 28px;
+    margin-top: 16px;
+}
+
+/* Section headings inside contact cards */
+.connhead,
+.suphead {
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-family: var(--font-ui);
+    font-weight: 700;
+    color: var(--clr-primary-dark);
+    text-align: center;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--clr-accent-bg);
+}
+
+.connpara,
+.suppara {
+    text-align: center;
+    line-height: 1.7;
+    color: var(--clr-text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+}
+
+/* Info list */
+.olinfoma { list-style: none; }
+
+.olinfoma li {
+    padding: 13px 0;
+    font-size: 1rem;
+    color: var(--clr-text-body);
+    border-bottom: 1px solid var(--clr-border-light);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    line-height: 1.5;
+}
+
+.olinfoma li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* Connect list */
+.connol { list-style: none; }
+
+.connol li {
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    background: var(--clr-surface-alt);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--clr-primary);
+    color: var(--clr-text-body);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.connol li:last-child { margin-bottom: 0; }
+
+.connol li:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.linker {
+    text-decoration: none;
+    color: var(--clr-primary-dark);
+    font-weight: 600;
+}
+
+.linker:hover {
+    text-decoration: underline;
+    color: var(--clr-primary);
+}
+
+/* Support / QR */
+.sup {
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.imageofqr {
+    width: clamp(200px, 40vw, 280px);
+    border-radius: var(--radius-md);
+    border: 4px solid var(--clr-primary);
+    box-shadow:
+        0 0 0 6px var(--clr-accent-bg),
+        var(--shadow-md);
+    margin: 0 auto;
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.imageofqr:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 0 6px var(--clr-accent-bg), var(--shadow-lg);
+}
+
+/* Sidebar menu (contact page .menu variant) */
+.menu { list-style: none; padding-top: 10px; }
+
+.menu li a {
+    display: block;
+    padding: 13px 18px;
+    text-decoration: none;
+    color: var(--clr-white);
+    font-family: var(--font-ui);
+    font-size: 0.92rem;
+    text-transform: uppercase;
+    border-radius: var(--radius-sm);
+    margin-bottom: 6px;
+    transition: background var(--transition);
+}
+
+.menu li a:hover { background: var(--clr-primary-deeper); }
+
+
+/* ── 13. RESPONSIVE ──────────────────────────────────────────── */
+
+/* — Sidebar stays as overlay on ≤ 1024px (no margin push) — */
+@media (max-width: 1024px) {
+    #openmenu:checked ~ main { margin-left: 0; }
+    /* Sidebar width on tablets: fixed 220px so it doesn't eat content */
+    #sidebar { width: 220px; }
+}
+
+/* — Tablet: ≤ 768px — */
+@media (max-width: 768px) {
+
+    /* Header */
+    .header { height: 55px; font-size: 22px; letter-spacing: 2px; }
+
+    /* Sidebar — uses dvh so address-bar chrome doesn't cut it off */
+    #sidebar {
+        top: 55px;
+        height: calc(100dvh - 55px);
+        width: clamp(180px, 65vw, 220px);
+    }
+
+    /* Main */
+    main { margin-top: 55px; min-height: calc(100dvh - 55px); padding: 15px; }
+
+    /* Clock container naturally recentres because of fluid top calc */
+
+    /* Table */
+    th { font-size: 16px; padding: 8px; }
+    td { font-size: 13px; padding: 8px; }
+
+    /* Calculator */
+    .calculator-container { max-width: 420px; margin: 20px auto; padding: 8px; }
+    .calculator-title h2  { font-size: 22px; }
+    .display input        { height: 65px; font-size: 24px; }
+    .button               { gap: 7px; }
+    .button button        { height: 58px; font-size: 18px; }
+
+    /* Digital clock — fluid values handle most of this already */
+    .clock-display     { gap: 10px; }
+    .clock-label       { height: 52px; }
+    .clock-label span  { font-size: 0.9rem; letter-spacing: 4px; }
+
+    /* Analog clock */
+    .close-btn { width: 38px; height: 38px; font-size: 17px; }
+
+    /* About */
+    .aboutheadpara h1,
+    .aboutheadpara h2,
+    .aboutheadpara p   { font-size: 1.1rem; padding: 9px 24px; letter-spacing: 1.5px; }
+    .section-label span { font-size: 0.95rem; }
+    .aboutmepara1,
+    .aboutmepara2,
+    .aboutmepara3      { padding: 14px 18px; font-size: 0.9rem; }
+    .aboutCFheading    { font-size: 1rem; }
+    .CFlist li         { font-size: 0.88rem; }
+
+    /* Contact */
+    .contheading h2    { font-size: 1.1rem; padding: 9px 28px; letter-spacing: 1.5px; }
+    .connhead, .suphead { font-size: 1.05rem; }
+    .olinfoma li       { font-size: 0.95rem; }
+    .continfo, .connections, .sup { margin-left: 10px; margin-right: 10px; padding: 20px; }
+}
+
+/* — Large phones: ≤ 600px — */
+@media (max-width: 600px) {
+    .header { font-size: 18px; letter-spacing: 1px; }
+    #sidebar { width: clamp(170px, 70vw, 200px); }
+}
+
+/* — Mobile: ≤ 480px — */
+@media (max-width: 480px) {
+
+    .openmenuicon { width: 32px; height: 32px; font-size: 18px; }
+    /* top already calculated fluidly in base style */
+
+    #sidebar { width: clamp(160px, 78vw, 200px); }
+
+    main { padding: 10px; }
+
+    /* Table */
+    th { font-size: 12px; padding: 6px 2px; }
+    td { font-size: 11px; padding: 6px 2px; height: 40px; }
+
+    /* Calculator */
+    .calculator-container        { width: 96%; max-width: 360px; margin: 15px auto; padding: 5px; }
+    .calculator-title            { margin-bottom: 8px; }
+    .calculator-title h2         { font-size: 18px; }
+    .display                     { margin-bottom: 8px; }
+    .display input               { height: 55px; font-size: 20px; padding: 10px; }
+    .button                      { gap: 6px; }
+    .button button               { height: 50px; font-size: 16px; border-radius: 10px; }
+    .button button:nth-child(20) { font-size: 24px; }
+
+    /* Digital clock — fluid clamp in base already scales correctly */
+    .clock-display    { gap: 5px; }
+    .clock-label      { height: 46px; }
+    .clock-label span { font-size: 0.75rem; letter-spacing: 2px; }
+
+    /* Analog close btn */
+    .close-btn { width: 34px; height: 34px; font-size: 15px; top: -13px; right: -13px; }
+
+    /* About */
+    .aboutheadpara h1,
+    .aboutheadpara h2,
+    .aboutheadpara p   { font-size: 0.95rem; padding: 8px 18px; letter-spacing: 1px; }
+    .section-label     { margin-top: 18px; }
+    .section-label span { font-size: 0.88rem; }
+    .paragraph         { margin-top: 14px; }
+    .aboutmepara1,
+    .aboutmepara2,
+    .aboutmepara3      { padding: 12px 14px; font-size: 0.85rem; line-height: 1.65; }
+    .keyfeaofCF        { padding: 14px; }
+    .aboutCFheading    { font-size: 0.95rem; }
+    .CFlist li         { font-size: 0.84rem; }
+    .contlink          { width: 100%; justify-content: center; padding: 12px; }
+
+    /* Contact */
+    .contheading       { margin-top: 16px; }
+    .contheading h2    { font-size: 0.95rem; padding: 8px 20px; letter-spacing: 1px; }
+    .connhead, .suphead { font-size: 1rem; }
+    .connpara, .suppara { font-size: 0.88rem; }
+    .olinfoma li       { font-size: 0.9rem; }
+    .connol li         { font-size: 0.88rem; word-break: break-word; }
+    .continfo, .connections, .sup { margin-left: 5px; margin-right: 5px; padding: 15px 13px; }
+    .imageofqr         { width: clamp(170px, 58vw, 230px); }
+}
+
+/* — Very small phones: ≤ 360px — */
+@media (max-width: 360px) {
+    #sidebar { width: clamp(150px, 82vw, 190px); }
+
+    /* Digital clock — fluid clamp handles the rest */
+    .clock-display    { gap: 3px; }
+    .clock-label span { font-size: 0.62rem; letter-spacing: 1px; }
+
+    /* Analog close btn */
+    .close-btn { width: 30px; height: 30px; font-size: 13px; top: -11px; right: -11px; }
+}
+
+/* — Landscape phones (short viewport) — */
+@media (max-height: 500px) and (orientation: landscape) {
+    .clock-container   { gap: 8px; }
+    /* time-box size handled by fluid clamp */
+    .clock-label       { height: 38px; }
+    .clock-label span  { font-size: 0.72rem; letter-spacing: 3px; }
+    /* Sidebar must not exceed viewport height in landscape */
+    #sidebar { height: calc(100dvh - var(--header-height)); overflow-y: auto; }
+}
+
+/* — Large desktops: ≥ 1400px — */
+@media (min-width: 1400px) {
+    .paragraph,
+    .contheading,
+    .continfo,
+    .connections,
+    .sup,
+    .contactme         { max-width: 1100px; }
+}
+
+/* — Accessibility: reduce motion — */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration:  0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+/* ── 14. EXTRA ANIMATIONS & POLISH ───────────────────────────── */
+
+/* Card hover lift for about/contact cards */
+.aboutmepara1,
+.aboutmepara2,
+.aboutmepara3,
+.keyfeaofCF,
+.continfo,
+.connections,
+.sup {
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.aboutmepara1:hover,
+.aboutmepara2:hover,
+.aboutmepara3:hover,
+.keyfeaofCF:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Heading pill subtle scale on appear */
+@keyframes pillAppear {
+    from { opacity: 0; transform: scale(0.92) translateY(-6px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+.aboutheadpara h1,
+.aboutheadpara h2,
+.aboutheadpara p,
+.contheading h2 {
+    animation: pillAppear 0.4s 0.1s cubic-bezier(0.34, 1.3, 0.64, 1) both;
+}
+
+/* Calculator buttons — press ripple */
+.button button {
+    position: relative;
+    overflow: hidden;
+}
+
+.button button::after {
+    content: "";
+    position: absolute;
+    inset: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.button button:active::after {
+    inset: -10%;
+    transform: scale(1);
+    opacity: 0;
+    transition: 0s;
+}
+
+/* Analog clock popup — extra spring */
+@keyframes clockPopup {
+    0%   { opacity: 0; transform: scale(0.75) rotate(-4deg); }
+    70%  { transform: scale(1.03) rotate(0.5deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* connol list item hover already defined; add icon nudge */
+.connol li {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-left-color 0.2s ease;
+}
+
+.connol li:hover {
+    border-left-color: var(--clr-accent-mid);
+}
+
+/* Smooth focus ring for accessibility */
+a:focus-visible,
+button:focus-visible,
+label:focus-visible {
+    outline: 2px solid var(--clr-accent-light);
+    outline-offset: 3px;
+    border-radius: 4px;
+}

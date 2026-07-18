@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="wn">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>CalFlow</title>
+
+        <style>
+            /* ── Themes Panel Container ── */
+            #themes-panel {
+                display: none;
+                flex-direction: column;
+                gap: 8px;
+                padding: 10px 14px 14px 14px;
+                background: rgba(255, 255, 255, 0.05);
+                border-left: 2px solid rgba(255, 255, 255, 0.15);
+                margin: 4px 10px 8px 10px;
+                border-radius: 0 8px 8px 0;
+            }
+            #themes-panel.open {
+                display: flex;
+            }
+
+            /* ── Individual Theme Button ── */
+            .theme-btn {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                width: 100%;
+                padding: 9px 14px;
+                background: rgba(255, 255, 255, 0.07);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                border-radius: 8px;
+                color: rgba(255, 255, 255, 0.75);
+                font-size: 13px;
+                font-weight: 500;
+                letter-spacing: 0.4px;
+                cursor: pointer;
+                text-align: left;
+                transition: all 0.2s ease;
+                position: relative;
+                overflow: hidden;
+                box-sizing: border-box;
+            }
+
+            /* Colour dot before each button */
+            .theme-btn::before {
+                content: '';
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                flex-shrink: 0;
+                background: var(--dot-color, #888);
+                box-shadow: 0 0 6px var(--dot-color, #888);
+            }
+
+            .theme-btn[data-theme="theme_style_1"] { --dot-color: #4fc3f7; }
+            .theme-btn[data-theme="theme_style_2"] { --dot-color: #81c784; }
+            .theme-btn[data-theme="theme_style_3"] { --dot-color: #ff8a65; }
+            .theme-btn[data-theme="theme_style_4"] { --dot-color: #ce93d8; }
+            .theme-btn[data-theme="theme_style_5"] { --dot-color: #ffb74d; }
+
+            .theme-btn:hover {
+                background: rgba(255, 255, 255, 0.14);
+                border-color: rgba(255, 255, 255, 0.35);
+                color: #ffffff;
+                transform: translateX(3px);
+            }
+
+            /* ── Active / Selected Theme ── */
+            .theme-btn.active-theme {
+                background: rgba(255, 255, 255, 0.16);
+                border-color: rgba(255, 255, 255, 0.5);
+                color: #ffffff;
+                font-weight: 700;
+                opacity: 1;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+            }
+            .theme-btn.active-theme::after {
+                content: '✓';
+                position: absolute;
+                right: 12px;
+                font-size: 12px;
+                opacity: 0.8;
+            }
+
+            /* ── Themes toggle arrow animation ── */
+            .themes-toggle-arrow {
+                display: inline-block;
+                transition: transform 0.25s ease;
+                font-size: 10px;
+                margin-left: 4px;
+            }
+            .themes-toggle-arrow.rotated {
+                transform: rotate(180deg);
+            }
+        </style>
+        <!-- Only ONE theme is loaded at a time, chosen from localStorage -->
+        <link id="calflow-theme" rel="stylesheet" href="CSS/theme_style_1.css">
+        <script src="JS/date.js"></script>
+        <script>
+            // Apply saved theme IMMEDIATELY (before page renders) to avoid flash
+            (function() {
+                var saved = localStorage.getItem('calflow_theme') || 'theme_style_1';
+                document.getElementById('calflow-theme').href = 'CSS/' + saved + '.css';
+            })();
+        </script>
+    </head>
+
+<!-- Body section of project -->
+<body>
+<div class="header"><h4> CalFlow </h4></div>
+<input type="checkbox" id="openmenu">
+<label for="openmenu" class="openmenuicon"> ☰ </label>
+<div id="sidebar">
+    <ul class="menu">
+            <li><a href="index.html"> 🏚️ Home</a></li>
+            <li><a href="#" onclick="toggleThemes(event)" id="themes-toggle"> 🦚 Themes <span class="themes-toggle-arrow" id="themes-arrow">▾</span></a></li>
+            <div id="themes-panel">
+                <button class="theme-btn" data-theme="theme_style_1">Theme 1</button>
+                <button class="theme-btn" data-theme="theme_style_2">Theme 2</button>
+                <button class="theme-btn" data-theme="theme_style_3">Theme 3</button>
+                <button class="theme-btn" data-theme="theme_style_4">Theme 4</button>
+                <button class="theme-btn" data-theme="theme_style_5">Theme 5</button>
+            </div>
+            <li><a href="clock.html"> 🕰️ Clock</a></li>
+            <li><a href="calculator.html"> 🧮 Calculator</a></li>
+            <li><a href="about.html"> 🙋🏻‍♂️ About</a></li>
+            <li><a href="contact.html"> 🌐 Contact Us</a></li>
+    </ul>
+</div>
+<!-- Side menu panel ⬆️ -->
+
+<!-- Calender Skeleton -->
+ <!-- January Month -->
+    <main>
+        <div class="table-container">
+        <table>
+            <tr class="tableheading">
+                <th colspan="3"> JANUARY </th>
+                <th colspan="4">  </th>
+            </tr>
+            <tr>
+                <td> Mon </td>
+                <td> Tue</td>
+                <td> Wed </td>
+                <td> Thu </td>
+                <td> Fri </td>
+                <td> Sat </td>
+                <td> Sun </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr> 
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+        </table>
+        </div>
+
+<!-- February Month -->
+<br>
+        <div class="table-container">
+        <table>
+            <tr class="tableheading">
+                <th colspan="3"> FEBRUARY </th>
+                <th colspan="4">  </th>
+            </tr>
+            <tr>
+                <td> Mon </td>
+                <td> Tue</td>
+                <td> Wed </td>
+                <td> Thu </td>
+                <td> Fri </td>
+                <td> Sat </td>
+                <td> Sun </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+        </table>
+        </div>
+
+<!-- March Month -->
+<br>
+         <div class="table-container">
+        <table>
+            <tr class="tableheading">
+                <th colspan="3"> MARCH </th>
+                <th colspan="4">  </th>
+            </tr>
+            <tr>
+                <td> Mon </td>
+                <td> Tue</td>
+                <td> Wed </td>
+                <td> Thu </td>
+                <td> Fri </td>
+                <td> Sat </td>
+                <td> Sun </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+        </table>
+        </div>
+
+<!-- April Month -->
+<br>
+         <div class="table-container">
+        <table>
+            <tr class="tableheading">
+                <th colspan="3"> APRIL </th>
+                <th colspan="4">  </th>
+            </tr>
+            <tr>
+                <td> Mon </td>
+                <td> Tue</td>
+                <td> Wed </td>
+                <td> Thu </td>
+                <td> Fri </td>
+                <td> Sat </td>
+                <td> Sun </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+        </table>
+        </div>
+
+<!-- May Month -->
+<br>
+        <div class="table-container">
+        <table>
+            <tr class="tableheading">
+                <th colspan="3"> mAY </th>
+                <th colspan="4">  </th>
+            </tr>
+            <tr>
+                <td> Mon </td>
+                <td> Tue</td>
+                <td> Wed </td>
+                <td> Thu </td>
+                <td> Fri </td>
+                <td> Sat </td>
+                <td> Sun </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+        </table>
+        </div>
+
+<!-- June Month -->
+<br>
+        <div class="table-container">
+        <table>
+            <tr class="tableheading"">
+                <th colspan="3"> JUNE </th>
+                <th colspan="4">  </th>
+            </tr>
+            <tr>
+                <td> Mon </td>
+                <td> Tue</td>
+                <td> Wed </td>
+                <td> Thu </td>
+                <td> Fri </td>
+                <td> Sat </td>
+                <td> Sun </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+        </table>
+        </div>
+
+<!-- July Month -->
+<br>
+        <div class="table-container">
+        <table>
+            <tr class="tableheading">
+                <th colspan="3"> JULY </th>
+                <th colspan="4">  </th>
+            </tr>
+            <tr>
+                <td> Mon </td>
+                <td> Tue</td>
+                <td> Wed </td>
+                <td> Thu </td>
+                <td> Fri </td>
+                <td> Sat </td>
+                <td> Sun </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+        </table>
+        </div>
+
+<!-- August Month -->
+<br>
+        <div class="table-container">
+        <table>
+            <tr class="tableheading">
+                <th colspan="3"> AUGUST </th>
+                <th colspan="4">  </th>
+            </tr>
+            <tr>
+                <td> Mon </td>
+                <td> Tue</td>
+                <td> Wed </td>
+                <td> Thu </td>
+                <td> Fri </td>
+                <td> Sat </td>
+                <td> Sun </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+        </table>
+        </div>
+
+<!-- September Month -->
+<br>
+        <div class="table-container">
+        <table>
+            <tr class="tableheading">
+                <th colspan="3"> SEPTEMBER </th>
+                <th colspan="4">  </th>
+            </tr>
+            <tr>
+                <td> Mon </td>
+                <td> Tue</td>
+                <td> Wed </td>
+                <td> Thu </td>
+                <td> Fri </td>
+                <td> Sat </td>
+                <td> Sun </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+        </table>
+        </div>
+
+<!-- October Month -->
+<br>
+        <div class="table-container">
+        <table>
+            <tr class="tableheading">
+                <th colspan="3"> OCTOBER </th>
+                <th colspan="4">  </th>
+            </tr>
+            <tr>
+                <td> Mon </td>
+                <td> Tue</td>
+                <td> Wed </td>
+                <td> Thu </td>
+                <td> Fri </td>
+                <td> Sat </td>
+                <td> Sun </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+        </table>
+        </div>
+
+<!-- November Month -->
+<br>
+        <div class="table-container">
+        <table>
+            <tr class="tableheading">
+                <th colspan="3"> NOVEMBER </th>
+                <th colspan="4">  </th>
+            </tr>
+            <tr>
+                <td> Mon </td>
+                <td> Tue</td>
+                <td> Wed </td>
+                <td> Thu </td>
+                <td> Fri </td>
+                <td> Sat </td>
+                <td> Sun </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+        </table>
+        </div>
+
+<!-- December Month -->
+<br>
+        <div class="table-container">
+        <table>
+            <tr class="tableheading">
+                <th colspan="3"> DECEMBER </th>
+                <th colspan="4">  </th>
+            </tr>
+            <tr>
+                <td> Mon </td>
+                <td> Tue</td>
+                <td> Wed </td>
+                <td> Thu </td>
+                <td> Fri </td>
+                <td> Sat </td>
+                <td> Sun </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+        </table>
+        </div>  
+    </main>
+
+<script>
+    // ── Toggle the themes panel open/closed ──
+    function toggleThemes(e) {
+        e.preventDefault();
+        var panel = document.getElementById('themes-panel');
+        var arrow = document.getElementById('themes-arrow');
+        panel.classList.toggle('open');
+        arrow.classList.toggle('rotated');
+    }
+
+    // ── Apply a theme and save it to localStorage ──
+    function applyTheme(themeName) {
+        document.getElementById('calflow-theme').href = 'CSS/' + themeName + '.css';
+        localStorage.setItem('calflow_theme', themeName);
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.classList.toggle('active-theme', btn.dataset.theme === themeName);
+        });
+    }
+
+    // ── Hook up all theme buttons on load ──
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                applyTheme(this.dataset.theme);
+            });
+        });
+        var current = localStorage.getItem('calflow_theme') || 'theme_style_1';
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.classList.toggle('active-theme', btn.dataset.theme === current);
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" 
+              content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; 
+              connect-src https://generativelanguage.googleapis.com;">
+    <title>CalFlow - Calculator</title>
+
+    <!-- Only ONE theme loaded at a time, chosen from localStorage -->
+    <link id="calflow-theme" rel="stylesheet" href="CSS/theme_style_1.css">
+    <script src="JS/function.js"></script>
+    <script>
+        (function() {
+            var saved = localStorage.getItem('calflow_theme') || 'theme_style_1';
+            document.getElementById('calflow-theme').href = 'CSS/' + saved + '.css';
+        })();
+    </script>
+</head>
+<body>
+
+        <!-- CalFlow Header -->
+    <div class="header">
+        <h4> CalFlow </h4>
+    </div>
+
+    <!-- Sidebar Toggle -->
+    <input type="checkbox" id="openmenu">
+    <label for="openmenu" class="openmenuicon"> ☰ </label>
+
+    <!-- CalFlow Sidebar -->
+    <div id="sidebar">
+        <ul class="menu">
+            <li><a href="index.html"> 🏚️ Home</a></li>
+            <li><a href="clock.html"> 🕰️ Clock</a></li>
+            <li><a href="about.html"> 🙋🏻‍♂️ About</a></li>
+            <li><a href="contact.html"> 🌐 Contact Us</a></li>
+        </ul>
+    </div>
+
+    <!-- Sidebar Toggle -->
+    <input type="checkbox" id="openmenu">
+    <label for="openmenu" class="openmenuicon">
+        ☰
+    </label>
+
+    <!-- CalFlow Sidebar -->
+    <div id="sidebar">
+        <ul class="menu">
+            <li><a href="index.html"> 🏚️ Home</a></li>
+            <li><a href="clock.html">  🕰️ Clock</a></li>
+            <li><a href="calculator.html"> 🧮 Calculator</a></li>
+            <li><a href="about.html"> 🙋🏻‍♂️ About</a></li>
+            <li><a href="contact.html"> 🌐 Contact Us</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Area -->
+    <main>
+        <!-- Calculator Container -->
+        <div class="calculator-container">
+
+            <!-- Calculator Heading -->
+            <div class="calculator-title">
+                <h2>Calculator</h2>
+            </div>
+
+            <!-- Display Screen -->
+            <div class="display">
+                <input type="text" id="result" readonly>
+            </div>
+
+            <!-- Calculator Buttons -->
+            <div class="button">
+
+                <!-- Row 1 -->
+                <button>AC</button>
+                <button>Del</button>
+                <button>()</button>
+                <button>/</button>
+
+                <!-- Row 2 -->
+                <button>7</button>
+                <button>8</button>
+                <button>9</button>
+                <button>x</button>
+
+                <!-- Row 3 -->
+                <button>4</button>
+                <button>5</button>
+                <button>6</button>
+                <button>-</button>
+
+                <!-- Row 4 -->
+                <button>1</button>
+                <button>2</button>
+                <button>3</button>
+                <button>+</button>
+
+                <!-- Row 5 -->
+                <button>%</button>
+                <button>0</button>
+                <button>.</button>
+                <button>=</button>
+            </div>
+        </div>
+    </main>
+
+<script>
+    function applyTheme(themeName) {
+        document.getElementById('calflow-theme').href = 'CSS/' + themeName + '.css';
+        localStorage.setItem('calflow_theme', themeName);
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.classList.toggle('active-theme', btn.dataset.theme === themeName);
+        });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() { applyTheme(this.dataset.theme); });
+        });
+        var current = localStorage.getItem('calflow_theme') || 'theme_style_1';
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.classList.toggle('active-theme', btn.dataset.theme === current);
+        });
+    });
+</script>
+</body>
+</html>

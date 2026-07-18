@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" 
+              content="default-src 'self'; script-src 'self' 'unsafe-inline'; 
+              connect-src https://generativelanguage.googleapis.com;">
+    <title>CalFlow - Contact</title>
+
+    <!-- CSS Styling -->
+    <style>
+        /* ── Themes Panel Container ── */
+        #themes-panel {
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            padding: 10px 14px 14px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 2px solid rgba(255, 255, 255, 0.15);
+            margin: 4px 10px 8px 10px;
+            border-radius: 0 8px 8px 0;
+        }
+        #themes-panel.open {
+            display: flex;
+        }
+        .theme-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 9px 14px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.4px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .theme-btn::before {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background: var(--dot-color, #888);
+            box-shadow: 0 0 6px var(--dot-color, #888);
+        }
+        .theme-btn[data-theme="theme_style_1"] { --dot-color: #4fc3f7; }
+        .theme-btn[data-theme="theme_style_2"] { --dot-color: #81c784; }
+        .theme-btn[data-theme="theme_style_3"] { --dot-color: #ff8a65; }
+        .theme-btn[data-theme="theme_style_4"] { --dot-color: #ce93d8; }
+        .theme-btn[data-theme="theme_style_5"] { --dot-color: #ffb74d; }
+        .theme-btn:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.35);
+            color: #ffffff;
+            transform: translateX(3px);
+        }
+        .theme-btn.active-theme {
+            background: rgba(255, 255, 255, 0.16);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #ffffff;
+            font-weight: 700;
+            opacity: 1;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+        }
+        .theme-btn.active-theme::after {
+            content: '✓';
+            position: absolute;
+            right: 12px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        .themes-toggle-arrow {
+            display: inline-block;
+            transition: transform 0.25s ease;
+            font-size: 10px;
+            margin-left: 4px;
+        }
+        .themes-toggle-arrow.rotated {
+            transform: rotate(180deg);
+        }
+    </style>
+
+    <!-- Only ONE theme loaded at a time, chosen from localStorage -->
+    <link id="calflow-theme" rel="stylesheet" href="CSS/theme_style_1.css">
+    
+    <!-- JavaScript Theme Function -->
+    <script>
+        (function() {
+            var saved = localStorage.getItem('calflow_theme') || 'theme_style_1';
+            document.getElementById('calflow-theme').href = 'CSS/' + saved + '.css';
+        })();
+    </script>
+</head>
+<body class="abtbg">
+
+    <!-- CalFlow Header -->
+    <div class="header">
+        <h4> CalFlow </h4>
+    </div>
+
+    <!-- Sidebar Toggle -->
+    <input type="checkbox" id="openmenu">
+    <label for="openmenu" class="openmenuicon"> ☰ </label>
+
+    <!-- CalFlow Sidebar -->
+    <div id="sidebar">
+        <ul class="menu">
+            <li><a href="index.html"> 🏚️ Home</a></li>
+            <li><a href="#" onclick="toggleThemes(event)" id="themes-toggle"> Themes <span class="themes-toggle-arrow" id="themes-arrow">▾</span></a></li>
+            <div id="themes-panel">
+                <button class="theme-btn" data-theme="theme_style_1">Theme 1</button>
+                <button class="theme-btn" data-theme="theme_style_2">Theme 2</button>
+                <button class="theme-btn" data-theme="theme_style_3">Theme 3</button>
+                <button class="theme-btn" data-theme="theme_style_4">Theme 4</button>
+                <button class="theme-btn" data-theme="theme_style_5">Theme 5</button>
+            </div>
+            <li><a href="clock.html"> 🕰️ Clock</a></li>
+            <li><a href="calculator.html"> 🧮 Calculator</a></li>
+            <li><a href="about.html"> 🙋🏻‍♂️ About</a></li>
+            <li><a href="contact.html"> 🌐 Contact Us</a></li>
+        </ul>
+    </div>
+
+    <!-- Sidebar Toggle -->
+    <input type="checkbox" id="openmenu">
+
+    <label for="openmenu" class="openmenuicon">
+        ☰
+    </label>
+
+    <!-- CalFlow Sidebar -->
+    <div id="sidebar">
+        <ul class="menu">
+            <li><a href="index.html"> 🏚️ Home</a></li>
+            <li><a href="clock.html">  🕰️ Clock</a></li>
+            <li><a href="calculator.html"> 🧮 Calculator</a></li>
+            <li><a href="about.html"> 🙋🏻‍♂️ About</a></li>
+            <li><a href="contact.html"> 🌐 Contact Us</a></li>
+        </ul>
+    </div>
+
+    <div class="contactme">
+        
+    </div>
+
+    <!-- Contact Info -->
+    <div class="continfo">
+        <h3 class="conthead"> CONTACT ME </h3>
+        <p class="infoma">
+            <ol class="olinfoma">
+                <li class="olliinfo1">
+                    Name:        Lakshya Singh
+                </li>
+                <li class="olliinfo2">
+                    ✉️ Email:   crzysupptant@gmail.com
+                </li>
+                <li class="olliinfo3">
+                    📞 Phone:   +91 9369718652
+                </li>
+            </ol>
+        </p>
+    </div>
+
+    <!-- Connect on links -->
+    <div class="connections">
+        <h3 class="connhead"> Connect On </h3>
+        <p class="connpara">
+            Join me on my social media platforms to stay updated with the latest news, projects, and insights. Follow me on:
+        </p>
+        <section class="connmain">
+            <ol class="connol">
+                <li class="connolli11">
+                    Linkedin:       <a class="linker" href="https://linkedin.openinapp.co/cjz02"> Lakshya Singh</a>
+                </li>
+                <li class="connolli2">
+                    Github:         <a class="linker" href="https://openinapp.link/1m7vy"> crazyachat </a>
+                </li>
+                <li class="connolli3">
+                    Youtube:        <a class="linker" href="https://yt.openinapp.co/kznyu"> Bit Sa Gyan </a>
+                </li>
+                <li class="connolli4">
+                    Facebook:       <a class="linker" href="https://fb.openinapp.co/bssws"> Bit Sa Gyan </a>
+                </li>
+                <li class="connolli5">
+                    Instagram:      <a class="linker" href="https://insta.openinapp.co/pokvx"> @bsg_techy </a>
+                </li>
+            </ol>
+        </section>
+    </div>
+
+    <!-- Support Me -->
+    <div class="sup">
+        <h3 class="suphead"> Support Us </h3>
+        <p class="suppara">
+            If you find my work valuable and would like to support me, consider contributing. Your support helps me continue creating and improving my projects. You can support me through:
+        </p>
+        <main class="sipimg">
+            <img class="imageofqr" src="CSS/qr-code.jpeg">
+        </main>
+    </div>
+
+<!-- JavaScript -->
+<script>
+    function toggleThemes(e) {
+        e.preventDefault();
+        var panel = document.getElementById('themes-panel');
+        var arrow = document.getElementById('themes-arrow');
+        panel.classList.toggle('open');
+        arrow.classList.toggle('rotated');
+    }
+    function applyTheme(themeName) {
+        document.getElementById('calflow-theme').href = 'CSS/' + themeName + '.css';
+        localStorage.setItem('calflow_theme', themeName);
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.classList.toggle('active-theme', btn.dataset.theme === themeName);
+        });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() { applyTheme(this.dataset.theme); });
+        });
+        var current = localStorage.getItem('calflow_theme') || 'theme_style_1';
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.classList.toggle('active-theme', btn.dataset.theme === current);
+        });
+    });
+</script>
+</body>
+</html>

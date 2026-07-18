@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" 
+              content="default-src 'self'; script-src 'self' 'unsafe-inline'; 
+              connect-src https://generativelanguage.googleapis.com;">
+    <title>CalFlow - Clock</title>
+
+    <style>
+    </style>
+
+    <!-- Only ONE theme loaded at a time, chosen from localStorage -->
+    <link id="calflow-theme" rel="stylesheet" href="CSS/theme_style_1.css">
+    <script src="JS/time.js"></script>
+    <script>
+        (function() {
+            var saved = localStorage.getItem('calflow_theme') || 'theme_style_1';
+            document.getElementById('calflow-theme').href = 'CSS/' + saved + '.css';
+        })();
+    </script>
+</head>
+
+<body>
+    <!-- CalFlow Header -->
+    <div class="header">
+        <h4> CalFlow </h4>
+    </div>
+
+    <!-- Sidebar Toggle -->
+    <input type="checkbox" id="openmenu">
+    <label for="openmenu" class="openmenuicon"> ☰ </label>
+
+    <!-- CalFlow Sidebar -->
+    <div id="sidebar">
+        <ul class="menu">
+            <li><a href="index.html"> 🏚️ Home</a></li>
+            <li><a href="clock.html"> 🕰️ Clock</a></li>
+            <li><a href="calculator.html"> 🧮 Calculator</a></li>
+            <li><a href="about.html"> 🙋🏻‍♂️ About</a></li>
+            <li><a href="contact.html"> 🌐 Contact Us</a></li>
+        </ul>
+    </div>
+<input type="checkbox" id="openmenu">
+<label for="openmenu" class="openmenuicon"> ☰ </label>
+<div id="sidebar">
+    <ul class="menu">
+            <li><a href="index.html"> 🏚️ Home</a></li>
+            <li><a href="clock.html"> 🕰️ Clock</a></li>
+            <li><a href="calculator.html"> 🧮 Calculator</a></li>
+            <li><a href="about.html"> 🙋🏻‍♂️ About</a></li>
+            <li><a href="contact.html"> 🌐 Contact Us</a></li>
+    </ul>
+</div>
+
+<div class="clock-container">
+    <div class="clock-display">
+        <div class="time-box hour">
+            <span>00</span>
+        </div>
+        <div class="separator">:</div>
+        <div class="time-box minute">
+            <span>00</span>
+        </div>
+
+        <div class="separator">:</div>
+
+        <div class="time-box second">
+            <span>00</span>
+        </div>
+
+        <div class="time-box meridiem">
+            <span>AM</span>
+        </div>
+    </div>
+
+    <div class="clock-label">
+        <button id="openWallClock">WALL CLOCK</button>
+    </div>
+</div>
+
+<!-- Popup Clock -->
+<div id="wallClockModal" class="wall-clock-modal">
+    <div class="wall-clock-box">
+        <button id="closeWallClock" class="close-btn">✕</button>
+        <div class="analog-clock">
+
+            <!-- 12 Hour Number System -->
+            <span class="number n12">12</span>
+            <span class="number n1">1</span>
+            <span class="number n2">2</span>
+            <span class="number n3">3</span>
+            <span class="number n4">4</span>
+            <span class="number n5">5</span>
+            <span class="number n6">6</span>
+            <span class="number n7">7</span>
+            <span class="number n8">8</span>
+            <span class="number n9">9</span>
+            <span class="number n10">10</span>
+            <span class="number n11">11</span>
+
+            <!-- Categorization of Time Format -->
+            <div class="hand hour-hand"></div>
+            <div class="hand minute-hand"></div>
+            <div class="hand second-hand"></div>
+            <div class="center-dot"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function applyTheme(themeName) {
+        document.getElementById('calflow-theme').href = 'CSS/' + themeName + '.css';
+        localStorage.setItem('calflow_theme', themeName);
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.classList.toggle('active-theme', btn.dataset.theme === themeName);
+        });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() { applyTheme(this.dataset.theme); });
+        });
+        var current = localStorage.getItem('calflow_theme') || 'theme_style_1';
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.classList.toggle('active-theme', btn.dataset.theme === current);
+        });
+    });
+</script>
+</body>
+</html>

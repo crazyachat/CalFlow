@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" 
+              content="default-src 'self'; script-src 'self' 'unsafe-inline'; 
+              connect-src https://generativelanguage.googleapis.com;">
+    <title>CalFlow - About</title>
+
+    <!-- Only ONE theme loaded at a time, chosen from localStorage -->
+    <link id="calflow-theme" rel="stylesheet" href="CSS/theme_style_1.css">
+    <script src="JS/function.js"></script>
+
+    <!-- JavaScript Theme Function -->
+    <script>
+        (function() {
+            var saved = localStorage.getItem('calflow_theme') || 'theme_style_1';
+            document.getElementById('calflow-theme').href = 'CSS/' + saved + '.css';
+        })();
+    </script>
+</head>
+<body class="abtbg">
+
+        <!-- CalFlow Header -->
+    <div class="header">
+        <h4> CalFlow </h4>
+    </div>
+
+    <!-- Sidebar Toggle -->
+    <input type="checkbox" id="openmenu">
+    <label for="openmenu" class="openmenuicon"> ☰ </label>
+
+    <!-- CalFlow Sidebar -->
+    <div id="sidebar">
+        <ul class="menu">
+            <li><a href="index.html"> 🏚️ Home</a></li>
+            <li><a href="clock.html"> 🕰️ Clock</a></li>
+            <li><a href="calculator.html"> 🧮 Calculator</a></li>
+            <li><a href="about.html"> 🙋🏻‍♂️ About</a></li>
+            <li><a href="contact.html"> 🌐 Contact Us</a></li>
+        </ul>
+    </div>
+
+    <!-- Sidebar Toggle -->
+    <input type="checkbox" id="openmenu">
+
+    <label for="openmenu" class="openmenuicon">
+        ☰
+    </label>
+
+    <!-- CalFlow Sidebar -->
+    <div id="sidebar">
+        <ul class="menu">
+             <li><a href="index.html"> 🏚️ Home</a></li>
+            <li><a href="clock.html"> 🕰️ Clock</a></li>
+            <li><a href="calculator.html"> 🧮 Calculator</a></li>
+            <li><a href="about.html"> 🙋🏻‍♂️ About</a></li>
+            <li><a href="contact.html"> 🌐 Contact Us</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content of About -->
+    <div class="aboutheadpara">
+            <h2 class="abouthead">About Me:</h2>
+        </div>
+        
+    <div class="paragraph">
+        <p class="aboutmepara1">
+            Hello Everyone! My name is Lakshya Singh, and I have a strong passion for programming, web development, and technology. I completed my Bachelor of Computer Applications (BCA) from Dr. C. V. Raman University during 2023–2026.
+        </p>
+        <p class="aboutmepara2">
+            This project represents my first major step in my journey as a developer. It reflects my dedication to continuous learning, self-improvement, and creating practical solutions to real-world problems. Through every project and experience, I strive to enhance my skills, expand my knowledge, and deliver meaningful work that meets users' needs and expectations.
+        </p>
+        <p class="aboutmepara3">
+            I believe that growth comes through consistent effort, curiosity, and innovation. My goal is to develop useful, user-friendly, and impactful digital solutions while continuously improving myself both personally and professionally.
+        </p>
+
+            <!-- Project Features -->
+            <section class="keyfeaofCF">
+                <h3 class="aboutCFheading">
+                    About CalFlow:
+                </h3>
+                <p class="aboutCFfea">
+                    <ol class="CFlist">
+                        <li class="CFli1">
+                            ✅ Calendar – View and manage dates through an organized and user-friendly calendar interface.
+                        </li>
+                        <li class="CFli2">
+                            ✅ Clock – Stay updated with the current time using a responsive digital clock display.
+                        </li>
+                        <li class="CFli3">
+                            ✅ Calculator – Perform quick and accurate calculations with an easy-to-use calculator.
+                        </li>
+                        <li class="CFli4">
+                            ✅ About & Contact Pages – Learn more about the project and connect with the creator for feedback, suggestions, or support.
+                        </li>
+                        <li class="CFli5">
+                            ✅ Multiple Themes – Personalize the appearance of CalFlow by choosing from different theme options.
+                        </li>
+                    </ol>
+                </p>
+            </section>
+    </div>
+
+    <!-- Redirect Button -->
+    <div class="contactme">
+        <h4 class="cont"><a class="contlink" href="contact.html"> Contact Us </a></h4>
+    </div>
+
+<!-- JavaScript -->
+<script>
+    function applyTheme(themeName) {
+        document.getElementById('calflow-theme').href = 'CSS/' + themeName + '.css';
+        localStorage.setItem('calflow_theme', themeName);
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.classList.toggle('active-theme', btn.dataset.theme === themeName);
+        });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() { applyTheme(this.dataset.theme); });
+        });
+        var current = localStorage.getItem('calflow_theme') || 'theme_style_1';
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.classList.toggle('active-theme', btn.dataset.theme === current);
+        });
+    });
+</script>
+</body>
+</html>
